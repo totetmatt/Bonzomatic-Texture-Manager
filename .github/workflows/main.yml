@@ -21,7 +21,7 @@ jobs:
             os: macos-latest
             target: x86_64-apple-darwin
           - build:  Windows-x86_64
-            os:  Windows-x86_64
+            os:  windows-latest
             target: x86_64-pc-windows-msvc
 
 
