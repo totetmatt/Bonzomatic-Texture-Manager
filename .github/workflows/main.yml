@@ -43,6 +43,7 @@ jobs:
         run: cargo build --verbose --locked --release --target ${{ matrix.target }}
  
       - name: Release Binary
+        id: build
         shell: bash
         run: |
           BIN_SUFFIX=""
@@ -56,6 +57,9 @@ jobs:
           # Define a better name for the final binary
           BIN_RELEASE="${PROJECT_NAME}-${{ matrix.name }}${BIN_SUFFIX}"
           BIN_RELEASE_VERSIONED="${PROJECT_NAME}-${{ github.ref_name }}-${{ matrix.name }}${BIN_SUFFIX}"
- 
-          # Move the built binary where you want it
-          mv "${BIN_OUTPUT}" "./release/${BIN_RELEASE}"
+          echo BIN_OUTPUT="$BIN_OUTPUT" >> $GITHUB_OUTPUT
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        if: github.ref_type == 'tag'
+        with:
+             files: "{{steps.vars.outputs.BIN_OUTPUT}}"
